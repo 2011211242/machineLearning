@@ -5,7 +5,6 @@ from __future__ import print_function
 
 import numpy as np
 import input_data
-import mnist_loader
 
 def sigmoid(z):
     return 1.0 / (1.0 + np.exp(-z))
@@ -34,8 +33,8 @@ class NetWork(object):
         self.biases = [np.random.randn(y, 1) for y in self.shapes[1:]]
         self.weights = [np.random.randn(y, x) / np.sqrt(x)
                 for x, y in zip(self.shapes[:-1], self.shapes[1:])]
-        print(self.weights[0].shape)
-        print(self.weights[1].shape)
+        #print(self.weights[0].shape)
+        #print(self.weights[1].shape)
         self.cost = cost
 
     def feedforward(self, a):
@@ -91,12 +90,6 @@ class NetWork(object):
         for x, y in mini_batch:
             delta_nable_b, delta_nable_w = self.backprop(x, y)
             nable_b = [nb + dnb for nb, dnb in zip(nable_b, delta_nable_b)]
-            #print(len(delta_nable_w))
-            #print(delta_nable_w[0].shape)
-            #print(delta_nable_w[1].shape)
-
-            #print(nable_w[0].shape)
-            #print(nable_w[1].shape)
             nable_w = [nw + dnw for nw, dnw in zip(nable_w, delta_nable_w)]
 
         self.weights = [(1 - eta * (lmbda / n)) * w - (eta/len(mini_batch)) * nw
@@ -119,19 +112,8 @@ class NetWork(object):
             accuracy = self.accuracy(evaluation_data, convert=True)
             print("Epochs %d, accuracy %f" %(j, accuracy))
 
-
-
-    
-    """
-    def update_mini_batch(self, mini_batch, eta, lmbda, n):
-        nable_b = 
-    """
-
-    
 if __name__ == "__main__":
     network = NetWork(shapes=[784, 100, 10])
     training_data, validation_data, test_data = input_data.read_data_sets("MNIST_data", one_hot = True)
-    #training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
-    print(len(training_data))
     network.SGD(training_data, 30, 10, 0.1, 1e-2, validation_data)
 
