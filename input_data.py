@@ -85,7 +85,7 @@ def read_data_sets(train_dir, one_hot=False):
     test_images = extract_images(train_dir, TEST_IMAGES)
     test_labels = extract_labels(train_dir, TEST_LABELS, one_hot=True)
 
-    VALIDATION_SIZE = 5000
+    VALIDATION_SIZE = 10000
     data = wrap_data(train_images, train_labels)
     validation_data = data[:VALIDATION_SIZE]
     training_data = data[VALIDATION_SIZE:]

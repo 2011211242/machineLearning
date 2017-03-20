@@ -32,7 +32,7 @@ class NetWork(object):
         self.num_layers = len(shapes)
         self.shapes = shapes
         self.biases = [np.random.randn(y, 1) for y in self.shapes[1:]]
-        self.weights = [np.random.randn(y, x) 
+        self.weights = [np.random.randn(y, x) / np.sqrt(x)
                 for x, y in zip(self.shapes[:-1], self.shapes[1:])]
         print(self.weights[0].shape)
         print(self.weights[1].shape)
@@ -111,7 +111,7 @@ class NetWork(object):
         for j in xrange(epochs):
             np.random.shuffle(training_data)
             mini_batches = [training_data[k:k+mini_batch_size] \
-                    for k in range(0, n, mini_batch_size)]
+                    for k in range(0, len(training_data), mini_batch_size)]
 
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta, lmbda, n)
@@ -129,9 +129,9 @@ class NetWork(object):
 
     
 if __name__ == "__main__":
-    network = NetWork()
+    network = NetWork(shapes=[784, 100, 10])
     training_data, validation_data, test_data = input_data.read_data_sets("MNIST_data", one_hot = True)
     #training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
     print(len(training_data))
-    network.SGD(training_data, 100, 30, 0.5, 1e-2, validation_data)
+    network.SGD(training_data, 30, 10, 0.1, 1e-2, validation_data)
 
